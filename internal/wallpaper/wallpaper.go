@@ -5,10 +5,13 @@
 package wallpaper
 
 import (
+	"bing-walpaper/internal/handlers"
 	"fmt"
 	"io"
+	"io/fs"
 	"log"
 	"net/http"
+	"os"
 	"regexp"
 )
 
@@ -18,13 +21,21 @@ type Wallpaper struct {
 	url        string
 	resolution string // ("1920x1200", "1920x1080", "UHD")
 	saveDir    string
+	fileName   string
 }
 
-func NewWallpaper(resolutions string, saveDir string) *Wallpaper {
+func NewWallpaper(resolutions string, saveDir string) (*Wallpaper, error) {
+
+	dir, err := handlers.GetAbsPath(saveDir)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &Wallpaper{
 		resolution: resolutions,
-		saveDir:    saveDir,
-	}
+		saveDir:    dir,
+	}, nil
 }
 
 func (w Wallpaper) String() string {
@@ -61,6 +72,7 @@ func (w *Wallpaper) GetWallpaperImageUrl() (string, error) {
 		return "", err
 	}
 	defer resp.Body.Close()
+
 	log.Println("Response status:", resp.Status)
 
 	body, err := io.ReadAll(resp.Body)
@@ -68,17 +80,23 @@ func (w *Wallpaper) GetWallpaperImageUrl() (string, error) {
 		return "", err
 	}
 
-	re := regexp.MustCompile(`th\\?id=(.*?_tmb.jpg)`)
+	re := regexp.MustCompile("th\\?id=(.*?_tmb.jpg)")
 	urlGroup := re.FindStringSubmatch(string(body))
-	url := urlGroup[len(urlGroup)-1]
 
 	re = regexp.MustCompile("tmb")
-	w.url = re.ReplaceAllLiteralString(url, w.resolution)
+	w.url = fmt.Sprintf("http://bing.com/%s", re.ReplaceAllLiteralString(urlGroup[0], w.resolution))
+	w.fileName = fmt.Sprintf("%s/%s", w.saveDir, re.ReplaceAllLiteralString(urlGroup[len(urlGroup)-1], w.resolution))
+
+	if _, err := os.Stat(w.fileName); err == nil {
+		log.Printf("INFO: File %s exists.", w.fileName)
+		return w.url, fs.ErrExist
+	}
 
 	return w.url, nil
 }
 
 func (w Wallpaper) Download() ([]byte, error) {
+	log.Println(w.url)
 	resp, err := http.Get(w.url)
 	if err != nil {
 		return nil, err
@@ -93,6 +111,33 @@ func (w Wallpaper) Download() ([]byte, error) {
 	return body, nil
 }
 
-func (w Wallpaper) Save() error {
+func (w Wallpaper) Save(image []byte) error {
 
+	if err := handlers.MakeDirAllIfNotExists(w.saveDir, 0755); err != nil {
+		return err
+	}
+
+	if err := os.WriteFile(w.fileName, image, 0644); err != nil {
+		return err
+	}
+	log.Printf("INFO: Save wallpaper %s\n.", w.fileName)
+
+	return nil
+}
+
+func (w Wallpaper) DownloadAndSave() error {
+
+	if _, err := w.GetWallpaperImageUrl(); err != nil {
+		return err
+	}
+
+	tmp, err := w.Download()
+	if err != nil {
+		return err
+	}
+
+	if err := w.Save(tmp); err != nil {
+		return err
+	}
+	return nil
 }
