@@ -4,22 +4,9 @@
  */
 package main
 
-import (
-	"bing-walpaper/internal/handlers"
-	"bing-walpaper/internal/wallpaper"
-	"os"
-)
+import "bing-wallpaper/internal/cli"
 
 func main() {
 
-	wallpaper, err := wallpaper.NewWallpaper("UHD", "bing-wallpapers")
-	handlers.CheckError(err, "wallpaper.NewWallpaper(")
-
-	if err := wallpaper.DownloadAndSave(); err != nil {
-		if os.IsExist(err) {
-			return
-		}
-		handlers.CheckError(err, "DownloadAndSave()")
-	}
-
+	cli.Execute()
 }

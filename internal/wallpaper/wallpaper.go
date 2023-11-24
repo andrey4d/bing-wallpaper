@@ -5,7 +5,7 @@
 package wallpaper
 
 import (
-	"bing-walpaper/internal/handlers"
+	"bing-wallpaper/internal/handlers"
 	"fmt"
 	"io"
 	"io/fs"
