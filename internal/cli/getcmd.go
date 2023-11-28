@@ -59,10 +59,3 @@ func resolution(resolution string) string {
 	log.Printf("use default image resolution UHD. can't set resolution to %s", resolution)
 	return "UHD"
 }
-
-func targetDirectory(target string) {
-	if target != "" {
-
-	}
-
-}
