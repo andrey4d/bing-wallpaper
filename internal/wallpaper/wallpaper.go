@@ -6,16 +6,18 @@ package wallpaper
 
 import (
 	"bing-wallpaper/internal/handlers"
+	"bing-wallpaper/internal/loggers"
 	"fmt"
 	"io"
 	"io/fs"
-	"log"
 	"net/http"
 	"os"
 	"regexp"
 )
 
 const bingUrl = "https://www.bing.com"
+
+var infoLogger = loggers.NewInfoLogger(os.Stdout)
 
 type Wallpaper struct {
 	url        string
@@ -73,7 +75,9 @@ func (w *Wallpaper) GetWallpaperImageUrl() (string, error) {
 	}
 	defer resp.Body.Close()
 
-	log.Println("Response status:", resp.Status)
+	if resp.StatusCode != 200 {
+		return "", err
+	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -88,7 +92,7 @@ func (w *Wallpaper) GetWallpaperImageUrl() (string, error) {
 	w.fileName = fmt.Sprintf("%s/%s", w.saveDir, re.ReplaceAllLiteralString(urlGroup[len(urlGroup)-1], w.resolution))
 
 	if _, err := os.Stat(w.fileName); err == nil {
-		log.Printf("INFO: File %s exists.", w.fileName)
+		infoLogger.Printf("File %s exists.\n", w.fileName)
 		return w.url, fs.ErrExist
 	}
 
@@ -96,13 +100,16 @@ func (w *Wallpaper) GetWallpaperImageUrl() (string, error) {
 }
 
 func (w Wallpaper) Download() ([]byte, error) {
-	log.Println(w.url)
+	infoLogger.Println(w.url)
 	resp, err := http.Get(w.url)
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	log.Println("Response status:", resp.Status)
+
+	if resp.StatusCode != 200 {
+		return nil, err
+	}
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
@@ -120,7 +127,7 @@ func (w Wallpaper) Save(image []byte) error {
 	if err := os.WriteFile(w.fileName, image, 0644); err != nil {
 		return err
 	}
-	log.Printf("INFO: Save wallpaper %s\n.", w.fileName)
+	infoLogger.Printf("Save wallpaper %s\n.", w.fileName)
 
 	return nil
 }

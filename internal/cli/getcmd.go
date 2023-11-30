@@ -6,6 +6,7 @@ package cli
 
 import (
 	"bing-wallpaper/internal/handlers"
+	"bing-wallpaper/internal/loggers"
 	"bing-wallpaper/internal/wallpaper"
 	"log"
 	"os"
@@ -27,6 +28,9 @@ func init() {
 }
 
 func get(cmd *cobra.Command, args []string) {
+
+	infoLogger := loggers.NewInfoLogger(os.Stdout)
+
 	res, err := cmd.Flags().GetString("res")
 	handlers.CheckError(err, "images resolution set err")
 
@@ -37,7 +41,7 @@ func get(cmd *cobra.Command, args []string) {
 	handlers.CheckError(err, "wallpaper.NewWallpaper(")
 
 	if target != "" {
-		log.Printf("Save wallpaper image to %s\n", target)
+		infoLogger.Printf("Save wallpaper image to %s\n", target)
 		w.SetSaveDir(target)
 	}
 

@@ -1,0 +1,25 @@
+INFO: 2023/11/30 23:20:06 Save wallpaper image to ./bing-wallpapers
+INFO: 2023/11/30 23:20:29 Save wallpaper image to ./bing-wallpapers
+INFO: 2023/11/30 23:23:46 Save wallpaper image to ./bing-wallpapers
+ERROR: 2023/11/30 23:23:47 wallpaper.go:95: INFO: File ./bing-wallpapers/OHR.TrotternishStorr_ROW9568788023_1920x1080.jpg exists.
+INFO: 2023/11/30 23:25:01 Save wallpaper image to ./bing-wallpapers
+ERROR: 2023/11/30 23:25:02 wallpaper.go:95: INFO: File ./bing-wallpapers/OHR.TrotternishStorr_ROW9568788023_1920x1080.jpg exists.
+INFO: 2023/11/30 23:25:28 Save wallpaper image to ./bing-wallpapers
+ERROR: 2023/11/30 23:25:29 wallpaper.go:95: INFO: File ./bing-wallpapers/OHR.TrotternishStorr_ROW9568788023_UHD.jpg exists.
+INFO: 2023/11/30 23:25:39 Save wallpaper image to ./bing-wallpapers
+ERROR: 2023/11/30 23:25:39 wallpaper.go:103: http://bing.com/th?id=OHR.TrotternishStorr_ROW9568788023_UHD.jpg
+ERROR: 2023/11/30 23:25:41 wallpaper.go:130: INFO: Save wallpaper ./bing-wallpapers/OHR.TrotternishStorr_ROW9568788023_UHD.jpg
+
+.
+INFO: 2023/11/30 23:26:22 Save wallpaper image to ./bing-wallpapers
+INFO: 2023/11/30 23:26:23 File ./bing-wallpapers/OHR.TrotternishStorr_ROW9568788023_UHD.jpg exists.
+INFO: 2023/11/30 23:26:37 Save wallpaper image to ./bing-wallpapers
+INFO: 2023/11/30 23:26:38 File ./bing-wallpapers/OHR.TrotternishStorr_ROW9568788023_UHD.jpg exists.
+INFO: 2023/11/30 23:26:39 Save wallpaper image to ./bing-wallpapers
+INFO: 2023/11/30 23:26:40 File ./bing-wallpapers/OHR.TrotternishStorr_ROW9568788023_UHD.jpg exists.
+INFO: 2023/11/30 23:26:41 Save wallpaper image to ./bing-wallpapers
+INFO: 2023/11/30 23:26:42 File ./bing-wallpapers/OHR.TrotternishStorr_ROW9568788023_UHD.jpg exists.
+INFO: 2023/11/30 23:26:47 Save wallpaper image to ./bing-wallpapers
+INFO: 2023/11/30 23:26:47 http://bing.com/th?id=OHR.TrotternishStorr_ROW9568788023_1920x1080.jpg
+INFO: 2023/11/30 23:26:48 Save wallpaper ./bing-wallpapers/OHR.TrotternishStorr_ROW9568788023_1920x1080.jpg
+.
