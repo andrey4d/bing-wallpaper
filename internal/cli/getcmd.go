@@ -25,9 +25,16 @@ func init() {
 	rootCmd.AddCommand(getCmd)
 	getCmd.PersistentFlags().String("res", "UHD", "Image resolution is in (\"1920x1200\", \"1920x1080\", \"UHD\").")
 	getCmd.PersistentFlags().String("target", "./bing-wallpapers", "Target directory for wallpapers.")
+	getCmd.PersistentFlags().String("log", "./bing-wallpapers/bing-wallpapers.log", "Log file.")
 }
 
 func get(cmd *cobra.Command, args []string) {
+
+	logfile, err := cmd.Flags().GetString("log")
+	handlers.CheckError(err, "target log file")
+	if logfile != "" {
+
+	}
 
 	infoLogger := loggers.NewInfoLogger(os.Stdout)
 
